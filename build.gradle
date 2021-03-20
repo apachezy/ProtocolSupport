@@ -77,6 +77,9 @@ repositories {
 	maven {
 		url 'https://papermc.io/repo/repository/maven-public/'
 	}
+	maven {
+		url('https://repo.mikeprimm.com/')
+	}
 }
 
 configurations {
@@ -84,30 +87,11 @@ configurations {
 }
 
 dependencies {
-	Path spigotBuildDirectoryPath = projectBuildDirectoryPath.resolve('spigot')
-	FileCollection runtimeLibraries = ManualGradleDependencySupplier.supplyDependecies(
-		projectDirectoryPath.resolve('libraries_runtime'),
-		[
-			new BuildDependencySupplier(
-				'spigot-1.16.5-1.jar',
-				new URL('https://hub.spigotmc.org/jenkins/job/BuildTools/120/artifact/target/BuildTools.jar'),
-				spigotBuildDirectoryPath,
-				'BuildTools.jar',
-				['java', '-jar', 'BuildTools.jar', '--rev', '1.16.5'],
-				['spigot-1.16.5.jar']
-			).setBuildEnv([
-				'MAVEN_OPTS': '-Dmaven.repo.local=' + spigotBuildDirectoryPath.resolve('m2').toString() + ' -Xmx1024M'
-			])
-		],
-		true
-	)
-
 	FileCollection annotationProcessors = fileTree(dir: projectDirectoryPath.resolve('processors'), include: '*.jar')
 
 	runtimeDependencies group: 'com.destroystokyo.paper', name: 'paper-api', version: '1.16.4-R0.1-SNAPSHOT'
 	runtimeDependencies annotationProcessors
-	runtimeDependencies runtimeLibraries
-
+	runtimeDependencies group: 'org.spigotmc', name: 'spigot', version: '1.16.4-R0.1-SNAPSHOT'
 
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 	implementation group: 'it.unimi.dsi', name: 'fastutil', version: '8.4.2'
