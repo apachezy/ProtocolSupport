@@ -117,23 +117,6 @@ compileJava {
 	options.compilerArgs << ('-Aprotocolsupportbuildprocessor.generatedresourcesdirectory=' + generatedResourcesResourcesDirectoryPath.resolve('preload').toString())
 }
 
-
-test {
-	Path workingDirectoryPath = projectDirectoryPath.resolve('testsRun');
-
-	doFirst {
-	    classpath -= configurations.runtimeDependencies
-	    classpath += configurations.runtimeDependencies
-		Files.createDirectories(workingDirectoryPath)
-	}
-
-	useJUnitPlatform()
-
-	workingDir = workingDirectoryPath;
-}
-
-
-
 task generateLocaleList(type: DefaultTask) {doLast{
 	Path i18nDirectory = generatedResourcesResourcesDirectoryPath.resolve("i18n")
 	Files.createDirectories(i18nDirectory)
